@@ -1,0 +1,21 @@
+# figure_mission.example.yaml
+
+project_id: SPATS2_fig3
+figure_id: Figure_3
+manuscript_section: Results_3.2
+central_claim: "SPATS2 knockdown reduces CXCR4 expression at the protein level in ARD cells"
+evidence_role: primary
+primary_question: "Does SPATS2-KD change CXCR4 protein abundance?"
+primary_contrast: "SPATS2_KD_vs_CTR"
+biological_unit: "cell line (ARD)"
+statistical_unit: "independent experiment"
+paired_design: false
+must_show: "CXCR4 WB/IF quantification with n per condition"
+must_not_claim: "patient-level significance (in vitro only)"
+upstream_figure: "Figure_2"
+downstream_figure: "Figure_4"
+target_journal: "unspecified"
+visual_profile: potato-user-v1
+# status state machine: DRAFT | LOCKED | CHANGED.
+# Only LOCKED missions may reach the final gate.
+status: LOCKED

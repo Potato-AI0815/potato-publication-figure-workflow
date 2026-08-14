@@ -1,0 +1,4 @@
+interface:
+  display_name: "Potato Publication Figure Workflow"
+  short_description: "Gate-controlled multi-skill orchestrator for publication figures"
+  default_prompt: "Use $potato-publication-figure-workflow to orchestrate this publication-figure project: mission lock, statistics gate, figure generation, independent audit with freshness binding, and the final manuscript-alignment gate."

@@ -1,0 +1,82 @@
+name: Workflow release validation CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: workflow-release-validation-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validation:
+    name: Workflow + released Audit E2E (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Check out workflow repository
+        uses: actions/checkout@v4
+        with:
+          path: workflow
+
+      - name: Check out released Potato Figure Audit (pinned tag)
+        uses: actions/checkout@v4
+        with:
+          repository: Potato-AI0815/Potato_Figure
+          ref: v0.4.3-alpha
+          path: audit
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: "release"
+          use-public-rspm: true
+
+      - name: Install R dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: workflow
+          cache: always
+          extra-packages: |
+            any::jsonlite
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Python dependencies
+        run: python -m pip install --quiet Pillow numpy
+
+      - name: Run orchestrator + contract hardening tests (real Audit invocations)
+        working-directory: workflow
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Linux" ]; then
+            # Same GitHub-runner environment fix as Potato_Figure CI: the R
+            # subprocess python needs its real site-packages for raster audit.
+            export PYTHONPATH="$(python -c 'import numpy, os; print(os.path.dirname(os.path.dirname(numpy.__file__)))')"
+            echo "PYTHONPATH=$PYTHONPATH"
+          fi
+          Rscript tests/run_orchestrator_tests.R "$PWD" "$GITHUB_WORKSPACE/audit"
+          Rscript tests/run_contract_hardening_tests.R "$PWD" "$GITHUB_WORKSPACE/audit"
+
+      - name: Machine-readable provider-boundary check (NOT_AVAILABLE, never fake PASS)
+        working-directory: workflow
+        shell: bash
+        run: |
+          Rscript tests/check_provider_boundary.R "$GITHUB_WORKSPACE/workflow"

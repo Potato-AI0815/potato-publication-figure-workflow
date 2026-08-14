@@ -1,0 +1,16 @@
+# statistics_contract.example.yaml
+
+biological_unit: "cell line (ARD)"
+statistical_unit: "independent experiment"
+group_definition: "CTR vs SPATS2-KD"
+paired: false
+n_by_group:
+  CTR: 3
+  SPATS2_KD: 3
+test: "unpaired t-test (Welch) or Mann-Whitney depending on normality"
+effect_measure: "mean difference / fold-change"
+CI: "95%"
+multiplicity: "not applicable (single primary comparison)"
+descriptive_vs_inferential: inferential
+limitations: "in vitro; n=3 experiments"
+status: PASS

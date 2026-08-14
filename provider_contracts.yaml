@@ -1,0 +1,27 @@
+# provider_contracts.yaml — Potato Publication Figure Workflow v0.2.1-alpha
+# 每个角色的显式能力契约。解析规则见 scripts/lib/orchestrator_core.R:
+#   1) skill name == preferred_name → 命中（显式意图）
+#   2) 否则: 全部 required_tokens 必须出现在 name+description, 且无 reject_token
+# 任何角色解析失败 → NOT_AVAILABLE（绝不猜测, 绝不用模糊关键词兜底）。
+# tokens 以 ';' 分隔。
+
+FIGURE_AUDITOR.preferred_name: potato-figure-audit
+FIGURE_AUDITOR.required_tokens: audit;figure
+FIGURE_AUDITOR.reject_tokens: generate;redraw
+FIGURE_AUDITOR.entrypoint: scripts/audit_figure.R
+FIGURE_AUDITOR.min_audit_contract: R6.1
+
+STATISTICS_PROVIDER.preferred_name: nature-statistics
+STATISTICS_PROVIDER.required_tokens: statistic;analysis
+STATISTICS_PROVIDER.reject_tokens: audit;orchestrat
+STATISTICS_PROVIDER.entrypoint: NA
+
+FIGURE_GENERATOR.preferred_name: nature-figure
+FIGURE_GENERATOR.required_tokens: figure;render
+FIGURE_GENERATOR.reject_tokens: audit;orchestrat;review
+FIGURE_GENERATOR.entrypoint: NA
+
+PAPER_SPINE_PROVIDER.preferred_name: paper-spine
+PAPER_SPINE_PROVIDER.required_tokens: manuscript;spine
+PAPER_SPINE_PROVIDER.reject_tokens: audit;orchestr;humaniz
+PAPER_SPINE_PROVIDER.entrypoint: NA
