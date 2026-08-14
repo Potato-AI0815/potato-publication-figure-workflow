@@ -79,13 +79,4 @@ jobs:
         working-directory: workflow
         shell: bash
         run: |
-          Rscript -e '
-            args <- commandArgs(trailingOnly = TRUE)
-            source(file.path(args[1], "scripts", "lib", "orchestrator_core.R"))
-            cts <- load_provider_contracts(file.path(args[1], "provider_contracts.yaml"))
-            res <- resolve_providers(roots = character(), contracts = cts)
-            st <- res[["status"]]
-            cat("status:", paste(st, collapse = ","), "\n")
-            if (length(st) == 0 || !all(st == "NOT_AVAILABLE")) quit(status = 1)
-            cat("PROVIDER_BOUNDARY: all NOT_AVAILABLE confirmed (no fake PASS)\n")
-          ' "$PWD"
+          Rscript tests/check_provider_boundary.R "$GITHUB_WORKSPACE/workflow"
