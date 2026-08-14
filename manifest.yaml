@@ -1,0 +1,41 @@
+# manifest.yaml — potato-publication-figure-workflow
+name: potato-publication-figure-workflow
+version: 0.2.1-alpha
+contract: W2
+license: MIT
+entrypoints:
+  workflow: scripts/run_workflow.R
+  resolver: scripts/resolve_dependencies.R
+runtime:
+  R: ">= 4.1"
+  r_packages: [jsonlite]
+  required_skills: []
+  preferred_skills:
+    - potato-figure-audit (>= 0.4.3-alpha, R6.1 audit contract; FIGURE_AUDITOR)
+    - nature-figure (FIGURE_GENERATOR)
+    - nature-statistics (STATISTICS_PROVIDER)
+    - paper-spine (PAPER_SPINE_PROVIDER)
+contracts:
+  audit_contract_min: R6.1
+  audit_freshness_binding: audited_artifacts sha256 + bytes (mismatch => AUDIT_STALE)
+  audit_contract_version: exact R6.1 (prefix matches rejected)
+  cross_artifact_consistency: figure_id/central_claim/statistical_unit/biological_unit/paired_design
+  mission_status_vocabulary: [DRAFT, LOCKED, CHANGED]
+  statistics_status_vocabulary: [PASS, FAIL, REVIEW_REQUIRED, UNAVAILABLE]
+  spine_alignment_vocabulary: [CONFIRMED, REVISED, REJECTED]
+  next_action_vocabulary:
+    - COMPLETE_DELIVERY
+    - REVISE_FIGURE
+    - RETURN_TO_STATISTICS
+    - RETURN_TO_CLAIM_EVIDENCE
+    - FIX_DELIVERY
+    - HUMAN_REVIEW_REQUIRED
+    - NONE
+exit_codes:
+  run_workflow: { "0": ready, "2": not-ready, "3": invalid-input, "4": internal-error }
+  resolve_dependencies: { "0": ok, "3": contracts-missing, "4": jsonlite-missing }
+tests:
+  orchestrator_behavior_tests: tests/run_orchestrator_tests.R
+test_usage: >
+  Rscript tests/run_orchestrator_tests.R <workflow_root> <potato-figure-audit_root>
+  (60 behavioral checks; real subprocess + end-to-end audit invocations)

@@ -1,0 +1,31 @@
+﻿# final_gate.example.yaml
+# Illustrative summary of a passing final gate (v0.2.1-alpha).
+
+project_id: demo
+figure_id: Figure_1
+date: "2026-08-13"
+workflow_version: 0.2.1-alpha
+FINAL_FIGURE_READY: true
+stages:
+  PAPER_SPINE_LITE: PASS
+  STATISTICS: PASS
+  FIGURE_GENERATION: GENERATED
+  FIGURE_AUDIT: PASS
+  FIGURE_REVISION: NOT_REQUIRED
+  PAPER_SPINE_FINAL: PASS
+  FINAL_GATE: PASS
+providers:
+  STATISTICS_PROVIDER: NOT_AVAILABLE   # USER_PROVIDED_STATISTICS consumed
+  FIGURE_GENERATOR: nature-figure@2.0.0
+  FIGURE_AUDITOR: potato-figure-audit@0.4.3-alpha
+  PAPER_SPINE_PROVIDER: paper-spine@unknown
+audit_contract:
+  contract_version: R6.1
+  figure_integrity: PASS
+  publication_package: PASS
+  publication_ready: true
+  NEXT_ACTION: NONE
+routing_advice: []
+exit_code: 0
+notes: "All gates satisfied under the R6.1 tiered contract; figure may enter manuscript."
+
