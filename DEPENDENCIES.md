@@ -3,6 +3,17 @@
 Third-party skills are **not bundled or redistributed**. Users must install
 them independently under their respective licenses.
 
+## Third-party provider boundary
+
+This workflow does not bundle or redistribute third-party providers such as
+nature-figure, paper-spine, or nature-statistics.
+
+Users install and use those providers independently under their respective
+licenses and terms.
+
+The MIT license in this repository applies only to the Potato Publication
+Figure Workflow code contained in this repository.
+
 | dependency | role | preferred_name | min version | license | required/preferred/optional | fallback |
 |---|---|---|---|---|---|---|
 | potato-figure-audit | FIGURE_AUDITOR | potato-figure-audit | **≥ 0.4.3-alpha (R6.1 contract)** | MIT | preferred/core | manual review; FINAL gate cannot PASS |

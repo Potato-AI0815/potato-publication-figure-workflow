@@ -48,6 +48,26 @@ Key guarantees:
 - Unresolved providers → NOT_AVAILABLE; never guessed (no fuzzy keyword
   matching, no humanizer-style misrouting).
 
+## Install as an Agent Skill
+
+```bash
+# Inspect the Skill
+npx skills add Potato-AI0815/potato-publication-figure-workflow --list
+
+# Install the workflow
+npx skills add Potato-AI0815/potato-publication-figure-workflow \
+  --skill potato-publication-figure-workflow \
+  --global --yes --copy
+```
+
+The strict audit stage requires `potato-figure-audit`:
+
+```bash
+npx skills add Potato-AI0815/Potato_Figure \
+  --skill potato-figure-audit \
+  --global --yes --copy
+```
+
 ## Quick start
 
 ```bash
